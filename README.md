@@ -37,11 +37,11 @@ By enforcing the use of TOON for these operations, you significantly extend your
 
 The skill exposes a `toon` binary with the following commands:
 
-- **`toon cat <file>`**: Reads a JSON file and outputs it in TOON format.
-- **`toon ls <dir>`**: Lists a directory recursively and outputs the tree structure in TOON.
-- **`toon fetch <url>`**: Fetches a URL (GET), attempts to parse the response as JSON, and outputs it in TOON.
-- **`toon grep <pattern> <dir>`**: Searches for a regex pattern using `git grep` / `grep` mechanics and outputs the matches in a structured TOON format, reducing line-noise.
-- **`toon convert '<json_string>'`**: Converts a raw JSON string argument into TOON.
+- **`toon.js cat <file>`**: Reads a JSON file and outputs it in TOON format.
+- **`toon.js ls <dir>`**: Lists a directory recursively and outputs the tree structure in TOON.
+- **`toon.js fetch <url>`**: Fetches a URL (GET), attempts to parse the response as JSON, and outputs it in TOON.
+- **`toon.js grep <pattern> <dir>`**: Searches for a regex pattern using `git grep` / `grep` mechanics and outputs the matches in a structured TOON format, reducing line-noise.
+- **`toon.js convert '<json_string>'`**: Converts a raw JSON string argument into TOON.
 
 ## Setup ⚙️
 
@@ -65,8 +65,8 @@ Once installed, the agent will automatically detect the skill instructions in `S
 You (or the agent) can also call it manually:
 
 ```bash
-skills/toon/bin/toon ls src/
-skills/toon/bin/toon cat package.json
+skills/toon/bin/toon.js ls src/
+skills/toon/bin/toon.js cat package.json
 ```
 
 ## Robustness 🛡️

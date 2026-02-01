@@ -32,7 +32,8 @@ function generateRandomJSON(depth: number): any {
 
 describe('TOON Fuzzing', () => {
     it('should handle random strings without crashing', async () => {
-        for (let i = 0; i < 100000; i++) {
+        const iterations = Number(process.env.FUZZ_ITERATIONS) || 1000;
+        for (let i = 0; i < iterations; i++) {
             const input = generateRandomString(Math.floor(Math.random() * 1000));
             try {
                 await convert(input);

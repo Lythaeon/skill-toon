@@ -41,5 +41,4 @@ cat src/config.json # DO NOT DO THIS for JSON files
 ```
 
 ## Implementation
-
-This skill uses the `@toon-format/toon` library to perform encoding. It is a lightweight wrapper that runs via `node`.
+This skill runs on standard `node` and bundles all necessary dependencies. No `npm install` is required.

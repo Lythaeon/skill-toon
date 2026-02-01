@@ -1,7 +1,7 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { cat, ls, curl, grep, convert } from '../lib/commands.js';
-import { encode } from '@toon-format/toon';
+import { encode } from '../vendor/toon.mjs';
 
 describe('TOON Commands', () => {
     beforeEach(() => {

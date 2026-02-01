@@ -19,8 +19,9 @@ async function main() {
     } else if (command === "ls") {
       const result = await ls(target);
       console.log(result);
-    } else if (command === "fetch") {
-      const result = await fetchUrl(target);
+    } else if (command === "curl") {
+      const curlArgs = args.slice(1);
+      const result = await curl(curlArgs);
       console.log(result);
     } else if (command === "grep") {
       const grepPath = args[2] || ".";

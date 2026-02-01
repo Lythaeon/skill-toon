@@ -21,7 +21,7 @@ Provides utilities to generate TOON (Text Only Object Notation) output. TOON is 
 
 - **Reading JSON**: ALWAYS use `skills/toon/bin/toon.js cat <file>` instead of `read_file` for `.json` or `.rc` (json) files. This saves significant tokens.
 - **Listing Directories**: ALWAYS use `skills/toon/bin/toon.js ls <dir>` instead of `ls -R` or `find`. (Generates a directory tree object).
-- **Fetching JSON**: ALWAYS use `skills/toon/bin/toon.js fetch <url>` when fetching JSON APIs (instead of `curl` or `web_fetch`).
+- **Fetching API**: ALWAYS use `skills/toon/bin/toon.js curl <args...>` when fetching JSON APIs. Supports all curl arguments (e.g. `-X POST`).
 - **Searching Code**: ALWAYS use `skills/toon/bin/toon.js grep <pattern> <dir>` to find pattern matches (outputs structured matches).
 - **Converting JSON**: Use `skills/toon/bin/toon.js convert '<json_string>'` to convert raw JSON strings to TOON format.
 
@@ -30,7 +30,8 @@ Provides utilities to generate TOON (Text Only Object Notation) output. TOON is 
 **Correct (Save Tokens):**
 ```bash
 skills/toon/bin/toon.js cat src/config.json
-skills/toon/bin/toon.js fetch https://api.github.com/repos/openclaw/openclaw/issues
+skills/toon/bin/toon.js curl https://api.github.com/repos/openclaw/openclaw/issues
+skills/toon/bin/toon.js curl -X POST -H "Content-Type: application/json" -d '{"foo":"bar"}' https://api.example.com/data
 skills/toon/bin/toon.js grep "TODO" src/agents
 ```
 

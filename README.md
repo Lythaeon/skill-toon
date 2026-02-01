@@ -39,7 +39,7 @@ The skill exposes a `toon` binary with the following commands:
 
 - **`toon.js cat <file>`**: Reads a JSON file and outputs it in TOON format.
 - **`toon.js ls <dir>`**: Lists a directory recursively and outputs the tree structure in TOON.
-- **`toon.js fetch <url>`**: Fetches a URL (GET), attempts to parse the response as JSON, and outputs it in TOON.
+- **`toon.js curl <args...>`**: Wraps system `curl` to fetch APIs. Supports all curl arguments. Attempts to parse response as JSON and output as TOON.
 - **`toon.js grep <pattern> <dir>`**: Searches for a regex pattern using `git grep` / `grep` mechanics and outputs the matches in a structured TOON format, reducing line-noise.
 - **`toon.js convert '<json_string>'`**: Converts a raw JSON string argument into TOON.
 

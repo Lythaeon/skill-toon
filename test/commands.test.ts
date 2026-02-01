@@ -1,6 +1,6 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { cat, ls, fetchUrl, grep, convert } from '../lib/commands.js';
+import { cat, ls, curl, grep, convert } from '../lib/commands.js';
 import { encode } from '@toon-format/toon';
 
 describe('TOON Commands', () => {
@@ -53,26 +53,26 @@ describe('TOON Commands', () => {
         });
     });
 
-    describe('fetchUrl', () => {
-        it('should fetch JSON and encode', async () => {
-            const mockFetch = vi.fn().mockResolvedValue({
-                ok: true,
-                headers: { get: () => 'application/json' },
-                json: async () => ({ api: "ok" }),
-            });
+    describe('curl', () => {
+        it('should execute curl and encode JSON output', async () => {
+            const mockExec = vi.fn().mockReturnValue('{"api": "ok"}');
             // @ts-ignore
-            const result = await fetchUrl('http://api.com', { fetchImpl: mockFetch });
+            const result = await curl(['http://api.com'], { execSyncImpl: mockExec });
+            expect(mockExec).toHaveBeenCalledWith('curl -s http://api.com', expect.anything());
             expect(result).toBe(encode({ api: "ok" }));
         });
 
-        it('should fetch text and encode', async () => {
-            const mockFetch = vi.fn().mockResolvedValue({
-                ok: true,
-                headers: { get: () => 'text/plain' },
-                text: async () => "status: ok",
-            });
+        it('should pass arguments correctly', async () => {
+            const mockExec = vi.fn().mockReturnValue('{}');
             // @ts-ignore
-            const result = await fetchUrl('http://site.com', { fetchImpl: mockFetch });
+            const result = await curl(['-X', 'POST', 'http://api.com'], { execSyncImpl: mockExec });
+            expect(mockExec).toHaveBeenCalledWith('curl -s -X POST http://api.com', expect.anything());
+        });
+
+        it('should handle non-JSON output', async () => {
+            const mockExec = vi.fn().mockReturnValue('status: ok');
+            // @ts-ignore
+            const result = await curl(['http://site.com'], { execSyncImpl: mockExec });
             expect(result).toBe(encode({ content: "status: ok" }));
         });
     });

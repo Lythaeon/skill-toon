@@ -1,42 +1,50 @@
 # TOON (Token-Oriented Object Notation) Skill
 
-This skill provides instructions for reducing token usage by 30-60% when dealing with structured data (JSON, directory structures, API responses). It leverages the `@toon-format/cli` to convert verbose JSON into a compact, LLM-optimized format.
+This skill provides instructions for reducing token usage by 30-60% when dealing with structured data (JSON, directory structures, API responses). 
+
+## Setup & Installation
+
+To minimize command overhead and save tokens, you MUST install the official TOON CLI globally before usage:
+
+```bash
+# Check if toon is installed, install if missing
+toon --version || npm install -g @toon-format/cli
+```
 
 ## Guidelines for Agents
 
-- **Always optimize JSON**: When reading large JSON files or receiving large API payloads, convert them to TOON before processing or including them in your context.
-- **Prefer pipes**: Use standard Unix pipes to send JSON output directly to the TOON converter.
-- **Installation**: Use `npx @toon-format/cli` for zero-install, on-demand conversion.
+- **Always optimize JSON**: Convert JSON output to TOON before including it in your context.
+- **Minimize Command Length**: Use the direct `toon` command instead of `npx` to keep your own prompt usage low.
+- **Prefer pipes**: Use standard Unix pipes to send data directly to the `toon` converter.
 
 ## Commands & Usage
 
 ### 1. Reading JSON Files
-Instead of reading a raw `.json` file, convert it to TOON to save tokens.
+Instead of reading raw JSON, pipe it to `toon`.
 ```bash
-cat path/to/data.json | npx @toon-format/cli
+cat data.json | toon
 ```
 
 ### 2. Fetching APIs
-When calling external APIs, pipe the JSON response directly into the TOON converter.
+Pipe external API responses directly into `toon`.
 ```bash
-curl -s https://api.example.com/data | npx @toon-format/cli
+curl -s https://api.example.com/data | toon
 ```
 *Supports all curl flags (e.g., `-X POST`, `-H "Authorization: ..."`).*
 
 ### 3. Listing Directory Structures
-To get a token-efficient directory tree, use a tool that outputs JSON (like `tree -J`) and pipe it to TOON.
+Use `tree -J` or any JSON-outputting tool and pipe to `toon`.
 ```bash
-tree -J path/to/dir | npx @toon-format/cli
+tree -J path/to/dir | toon
 ```
-*(If `tree` is unavailable, use `find` or `ls` and process as JSON if possible).*
 
 ### 4. Converting In-Line Data
-If you have a JSON string and want to compress it for your own memory/context:
+To compress a JSON string for your context:
 ```bash
-echo '{"your":"json"}' | npx @toon-format/cli
+echo '{"key":"value"}' | toon
 ```
 
-## Why use TOON?
-- **Token Efficiency**: Reduces the cost and context window pressure of structured data.
-- **Readability**: TOON is designed to be highly readable for LLMs, often performing better than minified JSON.
-- **Zero Footprint**: By using `npx`, no permanent dependencies are added to the environment.
+## Why install TOON?
+- **Command Token Savings**: `toon` is shorter than `npx @toon-format/cli`, saving tokens every time you run a command.
+- **Execution Speed**: Local installation is significantly faster than on-demand fetching.
+- **Readability**: TOON is designed to be highly readable for LLMs.

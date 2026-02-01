@@ -1,44 +1,42 @@
----
-description: >-
-  Token-saving utilities for agents: Read JSON, list directories, search code, and fetch APIs in the compact TOON format.
-  Reduces token usage by 30-50% for structured data.
-metadata:
-  openclaw:
-    emoji: "📉"
-    requires:
-      anyBins: ["node"]
-    keywords: ["tokens", "optimization", "json", "utils", "search"]
-    homepage: "https://github.com/openclaw/skill-toon"
----
+# TOON (Token-Oriented Object Notation) Skill
 
-# TOON Skill
+This skill provides instructions for reducing token usage by 30-60% when dealing with structured data (JSON, directory structures, API responses). It leverages the `@toon-format/cli` to convert verbose JSON into a compact, LLM-optimized format.
 
-Provides utilities to generate TOON (Text Only Object Notation) output. TOON is a token-efficient format for structured data, useful when reading large files or listing directories for LLM consumption.
+## Guidelines for Agents
 
-## Guidelines for Agent
+- **Always optimize JSON**: When reading large JSON files or receiving large API payloads, convert them to TOON before processing or including them in your context.
+- **Prefer pipes**: Use standard Unix pipes to send JSON output directly to the TOON converter.
+- **Installation**: Use `npx @toon-format/cli` for zero-install, on-demand conversion.
 
-**You MUST prioritize using this skill for structured data.**
+## Commands & Usage
 
-- **Reading JSON**: ALWAYS use `skills/toon/bin/toon.js cat <file>` instead of `read_file` for `.json` or `.rc` (json) files. This saves significant tokens.
-- **Listing Directories**: ALWAYS use `skills/toon/bin/toon.js ls <dir>` instead of `ls -R` or `find`. (Generates a directory tree object).
-- **Fetching API**: ALWAYS use `skills/toon/bin/toon.js curl <args...>` when fetching JSON APIs. Supports all curl arguments (e.g. `-X POST`).
-- **Searching Code**: ALWAYS use `skills/toon/bin/toon.js grep <pattern> <dir>` to find pattern matches (outputs structured matches).
-- **Converting JSON**: Use `skills/toon/bin/toon.js convert '<json_string>'` to convert raw JSON strings to TOON format.
-
-### Examples
-
-**Correct (Save Tokens):**
+### 1. Reading JSON Files
+Instead of reading a raw `.json` file, convert it to TOON to save tokens.
 ```bash
-skills/toon/bin/toon.js cat src/config.json
-skills/toon/bin/toon.js curl https://api.github.com/repos/openclaw/openclaw/issues
-skills/toon/bin/toon.js curl -X POST -H "Content-Type: application/json" -d '{"foo":"bar"}' https://api.example.com/data
-skills/toon/bin/toon.js grep "TODO" src/agents
+cat path/to/data.json | npx @toon-format/cli
 ```
 
-**Incorrect (Wastes Tokens):**
+### 2. Fetching APIs
+When calling external APIs, pipe the JSON response directly into the TOON converter.
 ```bash
-cat src/config.json # DO NOT DO THIS for JSON files
+curl -s https://api.example.com/data | npx @toon-format/cli
+```
+*Supports all curl flags (e.g., `-X POST`, `-H "Authorization: ..."`).*
+
+### 3. Listing Directory Structures
+To get a token-efficient directory tree, use a tool that outputs JSON (like `tree -J`) and pipe it to TOON.
+```bash
+tree -J path/to/dir | npx @toon-format/cli
+```
+*(If `tree` is unavailable, use `find` or `ls` and process as JSON if possible).*
+
+### 4. Converting In-Line Data
+If you have a JSON string and want to compress it for your own memory/context:
+```bash
+echo '{"your":"json"}' | npx @toon-format/cli
 ```
 
-## Implementation
-This skill runs on standard `node` and bundles all necessary dependencies. No `npm install` is required.
+## Why use TOON?
+- **Token Efficiency**: Reduces the cost and context window pressure of structured data.
+- **Readability**: TOON is designed to be highly readable for LLMs, often performing better than minified JSON.
+- **Zero Footprint**: By using `npx`, no permanent dependencies are added to the environment.
